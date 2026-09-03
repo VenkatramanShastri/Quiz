@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role of Western Values in Contemporary Indian Society - Interactive Quiz</title>
+    <meta name="description" content="An interactive classroom quiz on N.R. Narayana Murthy's speech: Role of Western Values in Contemporary Indian Society featuring 35 MCQs and a student roll number spinner.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- APP CONTAINER -->
+    <div id="app" class="app-wrapper">
+
+        <!-- GLOBAL HEADER / CONTROLS (Visible during Quiz) -->
+        <header id="global-header" class="global-header hidden">
+            <div class="header-brand">
+                <span class="badge-tag">Academic Quiz Game</span>
+                <h1 class="header-title">Western Values in Indian Society</h1>
+            </div>
+
+            <div class="header-stats">
+                <div class="stat-pill question-pill" title="Progress">
+                    <span class="stat-icon">📊</span>
+                    <span id="progress-text" class="stat-value">1 / 35</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button id="btn-sound" class="btn-icon" title="Toggle Sound (ON/OFF)">
+                    <span id="sound-icon" class="icon">🔊</span>
+                    <span class="btn-tooltip">Sound ON</span>
+                </button>
+                <button id="btn-fullscreen" class="btn-icon" title="Projector / Fullscreen Mode">
+                    <span class="icon">🖥️</span>
+                    <span class="btn-tooltip">Full Screen</span>
+                </button>
+                <button id="btn-stop-header" class="btn-action btn-danger-sm" title="End Quiz & Go to Thank You Slide">
+                    <span class="icon">🛑</span> Stop Quiz
+                </button>
+                <button id="btn-reset-header" class="btn-action btn-secondary-sm" title="Reset Entire Quiz">
+                    <span class="icon">🔄</span> Reset
+                </button>
+            </div>
+        </header>
+
+        <!-- PAGE 1: WELCOME SCREEN -->
+        <section id="welcome-screen" class="screen welcome-screen active">
+            <div class="welcome-card glass-panel">
+                
+                <h1 class="welcome-title">Role of Western Values in Contemporary Indian Society</h1>
+                
+                <div class="welcome-subtitle">
+                    Based on the landmark speech by <strong class="author-highlight">N.R. Narayana Murthy</strong>
+                    <br><span class="institution-tag">Chairman, Infosys Technologies • Lal Bahadur Shastri Institute of Management</span>
+                </div>
+
+                <div class="welcome-actions">
+                    <button id="btn-start-quiz" class="btn-primary btn-hero glow-effect">
+                        <span class="btn-text">START QUIZ</span>
+                        <span class="btn-arrow">➔</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: MAIN QUIZ SCREEN -->
+        <section id="quiz-screen" class="screen quiz-screen hidden">
+            
+            <div class="quiz-layout">
+                
+                <!-- LEFT SECTION: QUESTION PANEL -->
+                <main class="question-section glass-panel">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-container">
+                        <div id="progress-bar-fill" class="progress-bar-fill" style="width: 2.85%;"></div>
+                    </div>
+
+                    <!-- Question Header Info -->
+                    <div class="question-header">
+                        <span id="question-badge" class="question-badge">Question 1 of 35</span>
+                        <span id="question-status-tag" class="status-tag status-waiting">⏳ Waiting for Spin</span>
+                    </div>
+
+                    <!-- Question Text Box -->
+                    <div class="question-box">
+                        <h2 id="question-text" class="question-text">
+                            Loading question...
+                        </h2>
+                    </div>
+
+                    <!-- Choices Grid -->
+                    <div id="options-container" class="options-container">
+                        <button class="option-card" data-index="0">
+                            <span class="option-prefix">A</span>
+                            <span class="option-text">Option A</span>
+                        </button>
+                        <button class="option-card" data-index="1">
+                            <span class="option-prefix">B</span>
+                            <span class="option-text">Option B</span>
+                        </button>
+                        <button class="option-card" data-index="2">
+                            <span class="option-prefix">C</span>
+                            <span class="option-text">Option C</span>
+                        </button>
+                        <button class="option-card" data-index="3">
+                            <span class="option-prefix">D</span>
+                            <span class="option-text">Option D</span>
+                        </button>
+                    </div>
+
+                    <!-- Answer Feedback Message -->
+                    <div id="feedback-banner" class="feedback-banner hidden">
+                        <div id="feedback-content" class="feedback-content">
+                            <!-- Injected by JS: Wrong / Correct message -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Footer (Left / Right Arrow Buttons) -->
+                    <div class="question-footer navigation-bar">
+                        <button id="btn-prev-question" class="btn-secondary btn-nav" title="Previous Question (Left Arrow ←)">
+                            <span class="icon">◀</span>
+                            <span>PREV</span>
+                        </button>
+                        
+                        <div class="nav-hint">
+                            <span>Use <strong>←</strong> <strong>→</strong> arrow keys to navigate</span>
+                        </div>
+
+                        <button id="btn-next-question" class="btn-primary btn-nav" title="Next Question (Right Arrow →)">
+                            <span>NEXT</span>
+                            <span class="icon">▶</span>
+                        </button>
+                    </div>
+                </main>
+
+                <!-- RIGHT SECTION: ROLL NUMBER SPINNER -->
+                <aside class="spinner-section glass-panel">
+                    
+                    <div class="spinner-header">
+                        <h3 class="spinner-title">👨‍🎓 Student Spinner</h3>
+                        <span id="pool-counter" class="pool-badge">Pool: 82 / 82</span>
+                    </div>
+
+                    <!-- Spinner Slot Box -->
+                    <div class="spinner-display-box">
+                        <div class="spinner-glow-ring"></div>
+                        <div class="spinner-reel-container">
+                            <div id="spinner-reel" class="spinner-reel">
+                                <div id="spinner-number-display" class="spin-number-hero">❓</div>
+                            </div>
+                        </div>
+                        <div id="selected-roll-banner" class="selected-roll-banner hidden">
+                            <span class="target-icon">🎯</span> ROLL NO. <span id="current-roll-num">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Spin Controls -->
+                    <div class="spinner-controls">
+                        <button id="btn-spin" class="btn-accent btn-spin-hero glow-effect">
+                            <span class="spin-icon">🎡</span>
+                            <span id="btn-spin-text">SPIN ROLL NO.</span>
+                        </button>
+                    </div>
+
+                    <!-- Selected Students History Log -->
+                    <div class="history-panel">
+                        <div class="history-header">
+                            <h4>📋 Selected Students (<span id="history-count">0</span>)</h4>
+                            <button id="btn-toggle-history" class="btn-text-sm">View All</button>
+                        </div>
+                        <div id="history-tags-container" class="history-tags-container">
+                            <span class="history-empty-text">No roll numbers spun yet</span>
+                        </div>
+                    </div>
+
+                </aside>
+            </div>
+        </section>
+
+        <!-- QUIZ COMPLETION / THANK YOU MODAL -->
+        <div id="completion-modal" class="modal-backdrop hidden">
+            <div class="modal-card glass-panel text-center animate-pop">
+                <div class="completion-icon">🎓</div>
+                <h2 style="font-size: 2.2rem; color: #F59E0B; margin-bottom: 8px;">Thank You!</h2>
+                <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: #FFF;">Quiz Completed Successfully</h3>
+                <p class="completion-desc">Thank you for participating in the interactive session on <strong>N.R. Narayana Murthy's</strong> speech: <em>"Role of Western Values in Contemporary Indian Society"</em>.</p>
+                
+                <div class="score-summary-box">
+                    <div class="summary-item">
+                        <span class="summary-label">Questions Attended</span>
+                        <span id="final-questions" class="summary-val">1 / 35</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Rolls Spun</span>
+                        <span id="final-rolls" class="summary-val">0</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions horizontal" style="justify-content: center; gap: 14px;">
+                    <button id="btn-home-quiz" class="btn-secondary" style="padding: 14px 24px;">
+                        🏠 Welcome Screen
+                    </button>
+                    <button id="btn-restart-quiz" class="btn-primary" style="padding: 14px 28px;">
+                        🔄 Restart Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESET CONFIRMATION MODAL -->
+        <div id="reset-modal" class="modal-backdrop hidden">
+            <div class="modal-card glass-panel animate-pop">
+                <div class="modal-header">
+                    <span class="modal-warning-icon">⚠️</span>
+                    <h3>Reset Quiz?</h3>
+                </div>
+                <p class="modal-text">Are you sure you want to reset the quiz? This will return to Question 1 and restore all 82 student roll numbers to the pool.</p>
+                <div class="modal-actions horizontal">
+                    <button id="btn-cancel-reset" class="btn-secondary">Cancel</button>
+                    <button id="btn-confirm-reset" class="btn-danger">Yes, Reset Quiz</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
