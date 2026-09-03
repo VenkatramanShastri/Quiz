@@ -167,15 +167,11 @@
                         </button>
                     </div>
 
-                    <!-- Selected Students History Log -->
-                    <div class="history-panel">
-                        <div class="history-header">
-                            <h4>📋 Selected Students (<span id="history-count">0</span>)</h4>
-                            <button id="btn-toggle-history" class="btn-text-sm">View All</button>
-                        </div>
-                        <div id="history-tags-container" class="history-tags-container">
-                            <span class="history-empty-text">No roll numbers spun yet</span>
-                        </div>
+                    <!-- Selected Students Action Button -->
+                    <div class="history-panel-compact">
+                        <button id="btn-show-history" class="btn-secondary btn-history-trigger">
+                            <span class="icon">📋</span> View Selected Students (<span id="history-count">0</span>)
+                        </button>
                     </div>
 
                 </aside>
@@ -208,6 +204,24 @@
                     <button id="btn-restart-quiz" class="btn-primary" style="padding: 14px 28px;">
                         🔄 Restart Quiz
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SELECTED STUDENTS HISTORY MODAL -->
+        <div id="history-modal" class="modal-backdrop hidden">
+            <div class="modal-card glass-panel animate-pop">
+                <div class="modal-header">
+                    <span class="modal-warning-icon">📋</span>
+                    <h3>Selected Students</h3>
+                    <span id="modal-history-badge" class="pool-badge" style="margin-left: auto;">Count: <span id="modal-history-count">0</span></span>
+                </div>
+                <p class="modal-text" style="margin-bottom: 16px;">List of student roll numbers selected so far:</p>
+                <div id="history-tags-container" class="history-tags-container modal-history-tags">
+                    <span class="history-empty-text">No roll numbers spun yet</span>
+                </div>
+                <div class="modal-actions horizontal" style="margin-top: 24px;">
+                    <button id="btn-close-history" class="btn-primary" style="padding: 10px 24px;">Close</button>
                 </div>
             </div>
         </div>

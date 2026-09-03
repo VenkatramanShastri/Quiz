@@ -599,8 +599,11 @@ const DOM = {
     spinBtn: document.getElementById('btn-spin'),
     spinBtnText: document.getElementById('btn-spin-text'),
     historyCount: document.getElementById('history-count'),
+    modalHistoryCount: document.getElementById('modal-history-count'),
     historyTagsContainer: document.getElementById('history-tags-container'),
-    toggleHistoryBtn: document.getElementById('btn-toggle-history'),
+    showHistoryBtn: document.getElementById('btn-show-history'),
+    historyModal: document.getElementById('history-modal'),
+    closeHistoryBtn: document.getElementById('btn-close-history'),
 
     // Modals
     resetModal: document.getElementById('reset-modal'),
@@ -669,13 +672,21 @@ function setupEventListeners() {
 
     // Keyboard Arrow Keys Navigation (Left Arrow ←, Right Arrow →)
     document.addEventListener('keydown', (e) => {
-        // Only navigate if Quiz Screen is active and modal is not open
-        if (!DOM.quizScreen.classList.contains('hidden') && DOM.resetModal.classList.contains('hidden') && DOM.completionModal.classList.contains('hidden')) {
+        // Only navigate if Quiz Screen is active and modals are not open
+        const isModalOpen = !DOM.resetModal.classList.contains('hidden') || 
+                            !DOM.completionModal.classList.contains('hidden') ||
+                            (DOM.historyModal && !DOM.historyModal.classList.contains('hidden'));
+
+        if (!DOM.quizScreen.classList.contains('hidden') && !isModalOpen) {
             if (e.key === 'ArrowLeft') {
                 handlePrevQuestion();
             } else if (e.key === 'ArrowRight') {
                 handleNextQuestion();
             }
+        }
+        if (e.key === 'Escape') {
+            hideHistoryModal();
+            hideResetModal();
         }
     });
 
@@ -730,18 +741,26 @@ function setupEventListeners() {
         });
     }
 
-    // Toggle History View
-    let isHistoryExpanded = false;
-    DOM.toggleHistoryBtn.addEventListener('click', () => {
-        isHistoryExpanded = !isHistoryExpanded;
-        if (isHistoryExpanded) {
-            DOM.historyTagsContainer.style.maxHeight = '300px';
-            DOM.toggleHistoryBtn.textContent = 'Collapse';
-        } else {
-            DOM.historyTagsContainer.style.maxHeight = '120px';
-            DOM.toggleHistoryBtn.textContent = 'View All';
-        }
-    });
+    // Selected Students Modal Handlers
+    if (DOM.showHistoryBtn) {
+        DOM.showHistoryBtn.addEventListener('click', () => {
+            showHistoryModal();
+        });
+    }
+
+    if (DOM.closeHistoryBtn) {
+        DOM.closeHistoryBtn.addEventListener('click', () => {
+            hideHistoryModal();
+        });
+    }
+
+    if (DOM.historyModal) {
+        DOM.historyModal.addEventListener('click', (e) => {
+            if (e.target === DOM.historyModal) {
+                hideHistoryModal();
+            }
+        });
+    }
 }
 
 // Screen Navigation
@@ -981,18 +1000,34 @@ function updateSpinnerUI() {
 }
 
 function updateHistoryUI() {
-    DOM.historyCount.textContent = state.usedRollNumbers.length;
+    if (DOM.historyCount) DOM.historyCount.textContent = state.usedRollNumbers.length;
+    if (DOM.modalHistoryCount) DOM.modalHistoryCount.textContent = state.usedRollNumbers.length;
     
-    if (state.usedRollNumbers.length === 0) {
-        DOM.historyTagsContainer.innerHTML = '<span class="history-empty-text">No roll numbers spun yet</span>';
-        return;
-    }
+    if (DOM.historyTagsContainer) {
+        if (state.usedRollNumbers.length === 0) {
+            DOM.historyTagsContainer.innerHTML = '<span class="history-empty-text">No roll numbers spun yet</span>';
+            return;
+        }
 
-    // Render history tags in reverse (most recent first)
-    const reversed = [...state.usedRollNumbers].reverse();
-    DOM.historyTagsContainer.innerHTML = reversed
-        .map(num => `<span class="roll-tag">Roll ${num}</span>`)
-        .join('');
+        // Render history tags in reverse (most recent first)
+        const reversed = [...state.usedRollNumbers].reverse();
+        DOM.historyTagsContainer.innerHTML = reversed
+            .map(num => `<span class="roll-tag">Roll ${num}</span>`)
+            .join('');
+    }
+}
+
+function showHistoryModal() {
+    if (DOM.historyModal) {
+        updateHistoryUI();
+        DOM.historyModal.classList.remove('hidden');
+    }
+}
+
+function hideHistoryModal() {
+    if (DOM.historyModal) {
+        DOM.historyModal.classList.add('hidden');
+    }
 }
 
 // --------------------------------------------------------------------------
