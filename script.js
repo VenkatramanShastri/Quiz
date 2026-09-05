@@ -395,8 +395,11 @@ const QUESTIONS_DATA = [
     }
 ];
 
-// Total roll numbers available (1 to 82)
+// Total roll numbers range (1 to 82)
 const MAX_ROLL_NUMBERS = 82;
+// Dropped / Excluded Roll Numbers
+const EXCLUDED_ROLL_NUMBERS = [4, 10, 38, 43, 54, 55, 69, 79, 80];
+const TOTAL_VALID_ROLL_NUMBERS = MAX_ROLL_NUMBERS - EXCLUDED_ROLL_NUMBERS.length; // 73
 
 // ==========================================================================
 // 2. STATE MANAGEMENT
@@ -507,21 +510,36 @@ class SoundFX {
         if (!this.ctx) return;
 
         const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        
+        // Classic game show dual-pulse buzzer sound effect
+        const pulses = [
+            { start: 0, duration: 0.16, freq1: 175, freq2: 138 },
+            { start: 0.18, duration: 0.26, freq1: 125, freq2: 98 }
+        ];
 
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(220, now); // A3
-        osc.frequency.linearRampToValueAtTime(140, now + 0.25); // Drop frequency
+        pulses.forEach(p => {
+            const osc1 = this.ctx.createOscillator();
+            const osc2 = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
 
-        gain.gain.setValueAtTime(0.12, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            osc1.type = 'sawtooth';
+            osc2.type = 'square';
 
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
+            osc1.frequency.setValueAtTime(p.freq1, now + p.start);
+            osc2.frequency.setValueAtTime(p.freq2, now + p.start);
 
-        osc.start(now);
-        osc.stop(now + 0.3);
+            gain.gain.setValueAtTime(0.14, now + p.start);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + p.start + p.duration);
+
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc1.start(now + p.start);
+            osc2.start(now + p.start);
+            osc1.stop(now + p.start + p.duration);
+            osc2.stop(now + p.start + p.duration);
+        });
     }
 
     playVictory() {
@@ -554,9 +572,37 @@ class SoundFX {
             osc.stop(now + note.t + note.d);
         });
     }
+
+    playTimeUp() {
+        if (!state.soundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(220, now + 0.4);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.4);
+    }
 }
 
 const sfx = new SoundFX();
+
+// Roll Timer State
+let rollTimerState = {
+    intervalId: null
+};
 
 // ==========================================================================
 // 4. DOM ELEMENTS CACHE
@@ -604,6 +650,12 @@ const DOM = {
     showHistoryBtn: document.getElementById('btn-show-history'),
     historyModal: document.getElementById('history-modal'),
     closeHistoryBtn: document.getElementById('btn-close-history'),
+
+    // Student Roll Timer
+    timerContainer: document.getElementById('roll-timer-container'),
+    timerDisplay: document.getElementById('timer-display'),
+    timerBarFill: document.getElementById('timer-bar-fill'),
+    timerIcon: document.getElementById('timer-icon'),
 
     // Modals
     resetModal: document.getElementById('reset-modal'),
@@ -765,6 +817,7 @@ function setupEventListeners() {
 
 // Screen Navigation
 function showWelcomeScreen() {
+    stopRollTimer();
     DOM.welcomeScreen.classList.remove('hidden');
     DOM.welcomeScreen.classList.add('active');
     DOM.quizScreen.classList.add('hidden');
@@ -786,6 +839,7 @@ function showQuizScreen() {
 // --------------------------------------------------------------------------
 
 function renderCurrentQuestion() {
+    stopRollTimer();
     const qData = QUESTIONS_DATA[state.currentQuestionIndex];
     if (!qData) {
         handleQuizCompletion();
@@ -846,6 +900,7 @@ function handleOptionSelect(selectedIndex) {
         selectedCard.classList.add('correct');
         
         state.isAnsweredCorrectly = true;
+        stopRollTimer();
         
         sfx.playCorrect();
         showFeedbackBanner('correct', '🎉 Correct Answer!');
@@ -909,13 +964,76 @@ function handlePrevQuestion() {
 }
 
 // --------------------------------------------------------------------------
-// 7. ROLL NUMBER SPINNER LOGIC (Rolls 1 to 82, No Repetition)
+// 7. STUDENT ROLL TIMER LOGIC (45 Seconds Countdown)
+// --------------------------------------------------------------------------
+
+function startRollTimer(durationSeconds = 45) {
+    stopRollTimer();
+
+    if (!DOM.timerContainer) return;
+
+    const totalMs = durationSeconds * 1000;
+    const endTime = Date.now() + totalMs;
+
+    DOM.timerContainer.classList.remove('hidden', 'timer-warning', 'timer-danger', 'timer-expired');
+    DOM.timerIcon.textContent = '⏱️';
+    DOM.timerDisplay.textContent = `${durationSeconds}s`;
+    DOM.timerBarFill.style.width = '100%';
+
+    let lastSecondsBeep = durationSeconds;
+
+    rollTimerState.intervalId = setInterval(() => {
+        const remainingMs = Math.max(0, endTime - Date.now());
+        const remainingSeconds = Math.ceil(remainingMs / 1000);
+        const percent = (remainingMs / totalMs) * 100;
+
+        DOM.timerDisplay.textContent = `${remainingSeconds}s`;
+        DOM.timerBarFill.style.width = `${percent}%`;
+
+        if (remainingSeconds <= 5 && remainingSeconds > 0) {
+            DOM.timerContainer.classList.remove('timer-warning');
+            DOM.timerContainer.classList.add('timer-danger');
+            if (remainingSeconds !== lastSecondsBeep) {
+                lastSecondsBeep = remainingSeconds;
+                sfx.playTick();
+            }
+        } else if (remainingSeconds <= 15) {
+            DOM.timerContainer.classList.add('timer-warning');
+        }
+
+        if (remainingMs <= 0) {
+            clearInterval(rollTimerState.intervalId);
+            rollTimerState.intervalId = null;
+
+            DOM.timerContainer.classList.remove('timer-danger', 'timer-warning');
+            DOM.timerContainer.classList.add('timer-expired');
+            DOM.timerDisplay.textContent = "0s (Time's Up!)";
+            DOM.timerIcon.textContent = '⏰';
+            DOM.timerBarFill.style.width = '0%';
+            sfx.playTimeUp();
+        }
+    }, 100);
+}
+
+function stopRollTimer() {
+    if (rollTimerState.intervalId) {
+        clearInterval(rollTimerState.intervalId);
+        rollTimerState.intervalId = null;
+    }
+    if (DOM.timerContainer) {
+        DOM.timerContainer.classList.add('hidden');
+        DOM.timerContainer.classList.remove('timer-warning', 'timer-danger', 'timer-expired');
+    }
+}
+
+// --------------------------------------------------------------------------
+// 8. ROLL NUMBER SPINNER LOGIC (Excludes Dropped Rolls: 4, 10, 38, 43, 54, 55, 69, 79, 80)
 // --------------------------------------------------------------------------
 
 function getAvailableRollNumbers() {
     const available = [];
     for (let i = 1; i <= MAX_ROLL_NUMBERS; i++) {
-        if (!state.usedRollNumbers.includes(i)) {
+        if (!state.usedRollNumbers.includes(i) && !EXCLUDED_ROLL_NUMBERS.includes(i)) {
             available.push(i);
         }
     }
@@ -928,10 +1046,11 @@ function handleSpinClick() {
     const available = getAvailableRollNumbers();
     
     if (available.length === 0) {
-        showFeedbackBanner('wrong', '⚠️ All 82 Student Roll Numbers have been selected!');
+        showFeedbackBanner('wrong', `⚠️ All ${TOTAL_VALID_ROLL_NUMBERS} Active Student Roll Numbers have been selected!`);
         return;
     }
 
+    stopRollTimer();
     state.isSpinning = true;
     DOM.spinBtn.disabled = true;
     DOM.spinBtnText.textContent = 'SPINNING...';
@@ -941,8 +1060,9 @@ function handleSpinClick() {
     let counter = 0;
     const totalSpinTicks = 25; // number of random display flashes
     const spinInterval = setInterval(() => {
-        const randomTemp = Math.floor(Math.random() * MAX_ROLL_NUMBERS) + 1;
-        DOM.spinnerNumberDisplay.textContent = randomTemp;
+        // Flash only from available active roll numbers so excluded ones never appear
+        const randomIdx = Math.floor(Math.random() * available.length);
+        DOM.spinnerNumberDisplay.textContent = available[randomIdx];
         sfx.playTick();
 
         counter++;
@@ -973,6 +1093,9 @@ function finishSpin(availablePool) {
 
     sfx.playStopChime();
 
+    // Start 45-second timer right when roll number appears!
+    startRollTimer(45);
+
     // If banner had warning, clear it
     if (DOM.feedbackContent.textContent.includes('Please spin')) {
         hideFeedbackBanner();
@@ -984,8 +1107,8 @@ function finishSpin(availablePool) {
 }
 
 function updateSpinnerUI() {
-    const remaining = MAX_ROLL_NUMBERS - state.usedRollNumbers.length;
-    DOM.poolCounter.textContent = `Pool: ${remaining} / ${MAX_ROLL_NUMBERS}`;
+    const remaining = TOTAL_VALID_ROLL_NUMBERS - state.usedRollNumbers.length;
+    DOM.poolCounter.textContent = `Pool: ${remaining} / ${TOTAL_VALID_ROLL_NUMBERS}`;
 
     if (state.hasSpunForCurrentQuestion && state.currentRollNumber) {
         DOM.spinnerNumberDisplay.textContent = state.currentRollNumber;
@@ -1094,6 +1217,7 @@ function resetQuiz() {
 }
 
 function handleQuizCompletion() {
+    stopRollTimer();
     sfx.playVictory();
     
     // Calculate attended questions count out of 35

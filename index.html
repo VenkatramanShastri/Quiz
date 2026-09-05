@@ -143,7 +143,7 @@
                     
                     <div class="spinner-header">
                         <h3 class="spinner-title">👨‍🎓 Student Spinner</h3>
-                        <span id="pool-counter" class="pool-badge">Pool: 82 / 82</span>
+                        <span id="pool-counter" class="pool-badge">Pool: 73 / 73</span>
                     </div>
 
                     <!-- Spinner Slot Box -->
@@ -156,6 +156,17 @@
                         </div>
                         <div id="selected-roll-banner" class="selected-roll-banner hidden">
                             <span class="target-icon">🎯</span> ROLL NO. <span id="current-roll-num">--</span>
+                        </div>
+                        <!-- Student Answer Timer (45s) -->
+                        <div id="roll-timer-container" class="roll-timer-container hidden">
+                            <div class="timer-header-info">
+                                <span id="timer-icon" class="timer-icon">⏱️</span>
+                                <span class="timer-label">Time Remaining:</span>
+                                <span id="timer-display" class="timer-countdown">45s</span>
+                            </div>
+                            <div class="timer-bar-wrapper">
+                                <div id="timer-bar-fill" class="timer-bar-fill" style="width: 100%;"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -233,7 +244,7 @@
                     <span class="modal-warning-icon">⚠️</span>
                     <h3>Reset Quiz?</h3>
                 </div>
-                <p class="modal-text">Are you sure you want to reset the quiz? This will return to Question 1 and restore all 82 student roll numbers to the pool.</p>
+                <p class="modal-text">Are you sure you want to reset the quiz? This will return to Question 1 and restore all 73 active student roll numbers to the pool.</p>
                 <div class="modal-actions horizontal">
                     <button id="btn-cancel-reset" class="btn-secondary">Cancel</button>
                     <button id="btn-confirm-reset" class="btn-danger">Yes, Reset Quiz</button>
