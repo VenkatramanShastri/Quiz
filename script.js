@@ -23,12 +23,12 @@ const QUESTIONS_DATA = [
         id: 2,
         question: "On which date was the speech delivered?",
         options: [
-            "15 August 2002",
             "2 October 2002",
+            "15 October 2002",
             "26 January 2002",
             "14 November 2002"
         ],
-        answer: 1 // B
+        answer: 0 // A
     },
     {
         id: 3,
@@ -79,22 +79,22 @@ const QUESTIONS_DATA = [
         question: "How does Murthy define a value system?",
         options: [
             "A set of religious rules",
-            "The protocol for behaviour that enhances trust, confidence and commitment of community members",
+            "Traditional customs passed down generations",
             "A legal code enforced by the state",
-            "Traditional customs passed down generations"
+            "The protocol for behaviour that enhances trust, confidence and commitment of community members"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 8,
         question: "What are the two pillars of the cultural value system according to Murthy?",
         options: [
             "Loyalty to nation and loyalty to religion",
+            "Loyalty to family and loyalty to religion",
             "Loyalty to family and loyalty to community",
-            "Loyalty to self and loyalty to society",
             "Loyalty to tradition and loyalty to progress"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 9,
@@ -111,23 +111,23 @@ const QUESTIONS_DATA = [
         id: 10,
         question: "According to Murthy, the success of Infosys belongs as much to whom as to the founders themselves?",
         options: [
+            "The founders'families",
             "The government",
-            "The founders’ families",
             "Foreign investors",
             "Employees only"
         ],
-        answer: 1 // B
+        answer: 0 // A
     },
     {
         id: 11,
         question: "What major gap does Murthy identify between Indian family behaviour and community behaviour?",
         options: [
             "Indians neglect family but care for community",
-            "Strong family loyalty is not reflected in community behaviour (littering, corruption, breaking contracts)",
             "Indians are equally responsible in both",
+            "Strong family loyalty is not reflected in community behaviour (littering, corruption, breaking contracts)",
             "Community behaviour is stronger than family behaviour"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 12,
@@ -156,11 +156,11 @@ const QUESTIONS_DATA = [
         question: "What does Murthy say about corruption in Western societies compared to India?",
         options: [
             "Western societies have higher corruption",
-            "Western societies are relatively corruption-free due to individual responsibility",
             "Corruption levels are the same",
+            "Western societies are relatively corruption-free due to individual responsibility",
             "Corruption is not an issue in either society"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 15,
@@ -189,11 +189,11 @@ const QUESTIONS_DATA = [
         question: "Which Aristotle quote does Murthy use?",
         options: [
             "“Man is a political animal”",
-            "“We are what we repeatedly do”",
+            "“Virtue is a mean between extremes”",
             "“The unexamined life is not worth living”",
-            "“Virtue is a mean between extremes”"
+            "“We are what we repeatedly do”"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 18,
@@ -222,11 +222,11 @@ const QUESTIONS_DATA = [
         question: "What does Murthy call the most important attribute of a progressive society?",
         options: [
             "Military strength",
-            "Respect for those who have accomplished more and willingness to learn from them",
             "Large population",
+            "Respect for those who have accomplished more and willingness to learn from them",
             "Ancient heritage"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 21,
@@ -266,11 +266,11 @@ const QUESTIONS_DATA = [
         question: "What does Murthy say about dignity of labour in the West versus India?",
         options: [
             "Both societies value all work equally",
-            "West respects honest labour of every kind; India often reveres only intellectual work",
             "India respects manual labour more",
+            "West respects honest labour of every kind; India often reveres only intellectual work",
             "Dignity of labour is not important"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 25,
@@ -287,34 +287,34 @@ const QUESTIONS_DATA = [
         id: 26,
         question: "What does Murthy say about “Indian Standard Time”?",
         options: [
-            "It is a sign of cultural uniqueness",
             "It has become synonymous with being late and deadlines are rarely met",
+            "It is a sign of cultural uniqueness",
             "It is more efficient than Western time",
             "It reflects flexibility"
         ],
-        answer: 1 // B
+        answer: 0 // A
     },
     {
         id: 27,
         question: "According to Murthy, what does Western professionalism include?",
         options: [
             "Feudal thinking and dependence on bosses",
-            "Meritocracy, independent thinking, and performance evaluation free from personal prejudice",
             "Preference for being told what to do",
-            "Ignoring personal relationships at work"
+            "Ignoring personal relationships at work",
+            "Meritocracy, independent thinking, and performance evaluation free from personal prejudice"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 28,
         question: "What does Murthy say many bright Indians still suffer from?",
         options: [
             "Lack of intelligence",
-            "Feudal thinking – preferring to be told what to do rather than showing independence",
             "Over-confidence",
+            "Feudal thinking – preferring to be told what to do rather than showing independence",
             "Lack of education"
         ],
-        answer: 1 // B
+        answer: 2 // C
     },
     {
         id: 29,
@@ -343,22 +343,22 @@ const QUESTIONS_DATA = [
         question: "Which Dwight Eisenhower quote does Murthy use?",
         options: [
             "“The only thing we have to fear is fear itself”",
-            "“A people that values its privileges above its principles soon loses both”",
             "“I like Ike”",
-            "“Military-industrial complex”"
+            "“Military-industrial complex”",
+            "“A people that values its privileges above its principles soon loses both”"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 32,
         question: "According to Murthy, culture (quoting Henry Beecher) is that which helps us:",
         options: [
             "Preserve ancient traditions",
-            "Work for the betterment of all",
             "Compete with other nations",
-            "Maintain social hierarchy"
+            "Maintain social hierarchy",
+            "Work for the betterment of all"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 33,
@@ -375,23 +375,23 @@ const QUESTIONS_DATA = [
         id: 34,
         question: "Which Gandhi quote does Murthy use toward the end?",
         options: [
-            "“Be the change you wish to see in the world”",
             "“There is enough in this world for everyone’s need, but not enough for everyone’s greed”",
+            "“Be the change you wish to see in the world”",
             "“An eye for an eye makes the whole world blind”",
             "“Live as if you were to die tomorrow”"
         ],
-        answer: 1 // B
+        answer: 0 // A
     },
     {
         id: 35,
         question: "What is Murthy’s final message to the audience?",
         options: [
             "Focus only on personal success",
-            "Extend family values to the nation, work for the maximum welfare of all (Samasta janaanaam sukhino bhavantu), and let the present generation set an example for the next",
             "Wait for the government to solve all problems",
+            "Extend family values to the nation, work for the maximum welfare of all (Samasta janaanaam sukhino bhavantu), and let the present generation set an example for the next",
             "Emigrate to Western countries"
         ],
-        answer: 1 // B
+        answer: 2 // C
     }
 ];
 
@@ -444,7 +444,7 @@ class SoundFX {
 
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(440 + Math.random() * 200, this.ctx.currentTime);
-        
+
         gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
 
@@ -510,7 +510,7 @@ class SoundFX {
         if (!this.ctx) return;
 
         const now = this.ctx.currentTime;
-        
+
         // Classic game show dual-pulse buzzer sound effect
         const pulses = [
             { start: 0, duration: 0.16, freq1: 175, freq2: 138 },
@@ -612,7 +612,7 @@ const DOM = {
     welcomeScreen: document.getElementById('welcome-screen'),
     quizScreen: document.getElementById('quiz-screen'),
     globalHeader: document.getElementById('global-header'),
-    
+
     // Header Info
     progressText: document.getElementById('progress-text'),
     soundBtn: document.getElementById('btn-sound'),
@@ -725,9 +725,9 @@ function setupEventListeners() {
     // Keyboard Arrow Keys Navigation (Left Arrow ←, Right Arrow →)
     document.addEventListener('keydown', (e) => {
         // Only navigate if Quiz Screen is active and modals are not open
-        const isModalOpen = !DOM.resetModal.classList.contains('hidden') || 
-                            !DOM.completionModal.classList.contains('hidden') ||
-                            (DOM.historyModal && !DOM.historyModal.classList.contains('hidden'));
+        const isModalOpen = !DOM.resetModal.classList.contains('hidden') ||
+            !DOM.completionModal.classList.contains('hidden') ||
+            (DOM.historyModal && !DOM.historyModal.classList.contains('hidden'));
 
         if (!DOM.quizScreen.classList.contains('hidden') && !isModalOpen) {
             if (e.key === 'ArrowLeft') {
@@ -858,7 +858,7 @@ function renderCurrentQuestion() {
     DOM.optionCards.forEach((card, idx) => {
         const optionTextSpan = card.querySelector('.option-text');
         optionTextSpan.textContent = qData.options[idx];
-        
+
         // Reset classes & state
         card.classList.remove('correct', 'wrong');
         card.disabled = false;
@@ -898,16 +898,16 @@ function handleOptionSelect(selectedIndex) {
         // CORRECT ANSWER
         selectedCard.classList.remove('wrong');
         selectedCard.classList.add('correct');
-        
+
         state.isAnsweredCorrectly = true;
         stopRollTimer();
-        
+
         sfx.playCorrect();
         showFeedbackBanner('correct', '🎉 Correct Answer!');
 
         // Lock options after correct answer
         DOM.optionCards.forEach(card => card.disabled = true);
-        
+
         updateStatusTag();
     } else {
         // INCORRECT ANSWER
@@ -1044,7 +1044,7 @@ function handleSpinClick() {
     if (state.isSpinning) return;
 
     const available = getAvailableRollNumbers();
-    
+
     if (available.length === 0) {
         showFeedbackBanner('wrong', `⚠️ All ${TOTAL_VALID_ROLL_NUMBERS} Active Student Roll Numbers have been selected!`);
         return;
@@ -1087,7 +1087,7 @@ function finishSpin(availablePool) {
     DOM.spinnerNumberDisplay.textContent = chosenRoll;
     DOM.currentRollNumDisplay.textContent = chosenRoll;
     DOM.selectedRollBanner.classList.remove('hidden');
-    
+
     DOM.spinBtn.disabled = false;
     DOM.spinBtnText.textContent = 'SPIN AGAIN';
 
@@ -1125,7 +1125,7 @@ function updateSpinnerUI() {
 function updateHistoryUI() {
     if (DOM.historyCount) DOM.historyCount.textContent = state.usedRollNumbers.length;
     if (DOM.modalHistoryCount) DOM.modalHistoryCount.textContent = state.usedRollNumbers.length;
-    
+
     if (DOM.historyTagsContainer) {
         if (state.usedRollNumbers.length === 0) {
             DOM.historyTagsContainer.innerHTML = '<span class="history-empty-text">No roll numbers spun yet</span>';
@@ -1173,7 +1173,7 @@ function updateSoundUI() {
 
 function toggleFullscreen() {
     document.body.classList.toggle('projector-mode');
-    
+
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
             console.warn(`Error attempting to enable fullscreen: ${err.message}`);
@@ -1219,7 +1219,7 @@ function resetQuiz() {
 function handleQuizCompletion() {
     stopRollTimer();
     sfx.playVictory();
-    
+
     // Calculate attended questions count out of 35
     const questionsAttended = Math.min(state.currentQuestionIndex + 1, QUESTIONS_DATA.length);
 
