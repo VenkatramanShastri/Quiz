@@ -13,11 +13,11 @@ const QUESTIONS_DATA = [
         question: "Where was this speech delivered?",
         options: [
             "Indian Institute of Management Bangalore",
-            "Lal Bahadur Shastri Institute of Management",
             "Indian School of Business",
-            "XLRI Jamshedpur"
+            "XLRI Jamshedpur",
+            "Lal Bahadur Shastri Institute of Management"
         ],
-        answer: 1 // B
+        answer: 3 // D
     },
     {
         id: 2,
