@@ -964,10 +964,10 @@ function handlePrevQuestion() {
 }
 
 // --------------------------------------------------------------------------
-// 7. STUDENT ROLL TIMER LOGIC (45 Seconds Countdown)
+// 7. STUDENT ROLL TIMER LOGIC (30 Seconds Countdown)
 // --------------------------------------------------------------------------
 
-function startRollTimer(durationSeconds = 45) {
+function startRollTimer(durationSeconds = 30) {
     stopRollTimer();
 
     if (!DOM.timerContainer) return;
@@ -997,7 +997,7 @@ function startRollTimer(durationSeconds = 45) {
                 lastSecondsBeep = remainingSeconds;
                 sfx.playTick();
             }
-        } else if (remainingSeconds <= 15) {
+        } else if (remainingSeconds <= 10) {
             DOM.timerContainer.classList.add('timer-warning');
         }
 
@@ -1093,8 +1093,8 @@ function finishSpin(availablePool) {
 
     sfx.playStopChime();
 
-    // Start 45-second timer right when roll number appears!
-    startRollTimer(45);
+    // Start 30-second timer right when roll number appears!
+    startRollTimer(30);
 
     // If banner had warning, clear it
     if (DOM.feedbackContent.textContent.includes('Please spin')) {
